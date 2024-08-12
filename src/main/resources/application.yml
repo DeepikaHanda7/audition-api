@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: audition-api
+  config:
+    import: "optional:configserver:"
+  main:
+    allow-bean-definition-overriding: true
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  mvc:
+    throw-exception-if-no-handler-found: true
+  sleuth:
+    sampler:
+      probability: 1.0
+server:
+  port: 8080
+  max-http-request-header-size: 16KB
+management:
+  server:
+    port: 8081
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    com.audition: DEBUG
+
+
+downStream:
+  api:
+    endpoint:
+      baseUrl: https://jsonplaceholder.typicode.com
+      get:
+        Posts: posts
+        PostById: posts/{postId}
+        postComment: posts/{postId}/comments
+        CommentsByPostId: comments?postId={postId}
+  timeout:
+    connectTimeOut: 2000
+    readTimeOut: 10000

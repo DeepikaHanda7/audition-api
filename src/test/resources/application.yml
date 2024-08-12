@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: "optional:configserver:"
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+application:
+  connection:
+    read-timeout: 5000
+    write-timeout: 5000
+    connect-timeout: 5000
+    response-timeout: 5000
+
+downStream:
+  api:
+    endpoint:
+      baseUrl: https://jsonplaceholder.typicode.com
+      get:
+        Posts: posts
+        PostById: posts/{postId}
+        postComment: posts/{postId}comments
+        CommentsByPostId: comments?postId={postId}
+  timeout:
+    connectTimeOut: 2000
+    readTimeOut: 10000
